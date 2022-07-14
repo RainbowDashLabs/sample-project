@@ -1,0 +1,26 @@
+name: Publish to Nexus
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev*
+      - feature/*
+      - fix/*
+
+jobs:
+  build:
+    uses: ./.github/workflows/verify.yml
+  publish:
+    needs: build
+    environment: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+      - name: Publish to eldonexus
+        run: ./gradlew publishMavenPublicationToEldoNexusRepository
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}

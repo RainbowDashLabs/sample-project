@@ -1,0 +1,29 @@
+name: Javadocs
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/verify.yml
+  build-javadocs:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+      - name: Create javadocs
+        run: ./gradlew javadoc
+      - name: Prepare Javadocs
+        run: |
+          cd sampleproject-api/build/docs/javadoc
+          echo "Creating .nojekyll to have Github pages deploy html as is:"
+          touch .nojekyll
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.4
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: sampleproject-api/build/docs/javadoc # The folder the action should deploy.
