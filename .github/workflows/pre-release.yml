@@ -1,0 +1,27 @@
+name: "pre-release"
+
+on:
+  push:
+    tags:
+      - pre-release/*
+
+jobs:
+  build:
+    uses: ./.github/workflows/verify.yml
+
+  tagged-release:
+    needs: build
+    name: Tagged Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+      - name: build
+        run: ./gradlew build
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          files: |
+            LICENSE.txt
+            sampleproject-core/build/libs/*core.jar
