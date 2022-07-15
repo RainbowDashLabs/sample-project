@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"de.chojo.sampleproject","c":"ApiClass","l":"ApiClass()","url":"%3Cinit%3E()"},{"p":"de.chojo.sampleproject","c":"ApiClass","l":"apiMethod(String)","url":"apiMethod(java.lang.String)"}]
